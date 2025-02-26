@@ -71,7 +71,39 @@ func execCommand() error {
 		path := getArg(1, "Enter dir name:")
 		return os.Mkdir(path, 0777)
 
+	case "cat":
+		path := getArg(1, "Enter path")
+		data, err := os.ReadFile(path)
+		if err != nil {
+			return err
+		}
+		os.Stdout.Write(data)
+
+	case "touch":
+		path := getArg(1, "Enter path")
+		_, err := os.Create(path)
+		return err
+
+	case "cp":
+		path1 := getArg(1, "Enter path 1")
+		path2 := getArg(2, "Enter path 2")
+
+		data, err := os.ReadFile(path1)
+		if err != nil {
+			return err
+		}
+
+		return os.WriteFile(path2, data, 0777)
+
+	case "echo":
+		content := getArg(1, "Enter content")
+		path := getArg(2, "enter path")
+		return os.WriteFile(path, []byte(content), 0777)
+
+	default:
+		fmt.Print(helpMess)
 	}
+	return nil
 
 }
 
